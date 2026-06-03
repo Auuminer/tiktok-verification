@@ -1,329 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kwan&Som — Content Dashboard</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 30%, #E8453C 100%);
-    min-height: 100vh;
-  }
-  
-  /* --- HEADER --- */
-  .header {
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(20px);
-    padding: 16px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-  }
-  .logo { display: flex; align-items: center; gap: 12px; }
-  .logo-icon {
-    width: 44px; height: 44px;
-    background: linear-gradient(135deg, #FFD700, #FFA500);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px; color: white;
-  }
-  .logo-text { color: white; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-  .logo-sub { color: rgba(255,255,255,0.7); font-size: 13px; }
-  
-  /* --- MAIN CONTAINER --- */
-  .main {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 20px;
-  }
-  
-  /* --- WELCOME / LOGIN CARD --- */
-  .card {
-    background: white;
-    border-radius: 20px;
-    padding: 48px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  .card h1 { font-size: 32px; color: #1a1a2e; margin-bottom: 8px; }
-  .card p { color: #666; font-size: 16px; margin-bottom: 32px; line-height: 1.6; }
-  
-  /* --- CONNECT BUTTON --- */
-  .btn-tiktok {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: #000; color: white; border: none;
-    padding: 16px 36px; border-radius: 50px;
-    font-size: 18px; font-weight: 600; cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-tiktok:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-  .btn-tiktok svg { width: 24px; height: 24px; }
-  
-  /* --- PROFILE SECTION --- */
-  .profile-bar {
-    display: flex; align-items: center; gap: 12px;
-    background: white; border-radius: 16px;
-    padding: 16px 24px; margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  }
-  .avatar {
-    width: 52px; height: 52px; border-radius: 50%;
-    background: linear-gradient(135deg, #FF6B35, #FFD700);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px; color: white; font-weight: 700;
-  }
-  .profile-info h3 { font-size: 18px; color: #1a1a2e; }
-  .profile-info span { font-size: 13px; color: #999; }
-  
-  /* --- UPLOAD SECTION --- */
-  .upload-area {
-    background: white; border-radius: 20px;
-    padding: 40px; text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    margin-bottom: 24px;
-    border: 2px dashed #FF6B35;
-    transition: border-color 0.3s;
-  }
-  .upload-area.active { border-color: #00C853; background: #f0fff4; }
-  .upload-area svg { width: 60px; height: 60px; color: #FF6B35; margin-bottom: 16px; }
-  .upload-area h3 { color: #1a1a2e; margin-bottom: 8px; }
-  .upload-area p { color: #999; font-size: 14px; margin-bottom: 20px; }
-  
-  .btn-upload {
-    background: linear-gradient(135deg, #FF6B35, #FF8C42);
-    color: white; border: none; padding: 12px 32px;
-    border-radius: 50px; font-size: 16px; font-weight: 600;
-    cursor: pointer; transition: transform 0.2s;
-  }
-  .btn-upload:hover { transform: scale(1.03); }
-  
-  /* --- PROGRESS --- */
-  .progress-container {
-    display: none; margin-top: 20px;
-  }
-  .progress-bar {
-    width: 100%; height: 8px;
-    background: #eee; border-radius: 4px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; background: linear-gradient(90deg, #FF6B35, #00C853);
-    width: 0%; transition: width 0.3s;
-    border-radius: 4px;
-  }
-  .progress-text { font-size: 14px; color: #666; margin-top: 8px; }
-  
-  /* --- PUBLISH SECTION --- */
-  .publish-card {
-    background: white; border-radius: 20px;
-    padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .publish-info { display: flex; align-items: center; gap: 16px; }
-  .thumb {
-    width: 80px; height: 80px; border-radius: 12px;
-    background: linear-gradient(135deg, #FF6B35, #E8453C);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .thumb svg { width: 36px; height: 36px; fill: white; }
-  .publish-details h3 { color: #1a1a2e; margin-bottom: 4px; }
-  .publish-details span { color: #999; font-size: 13px; }
-  
-  .btn-publish {
-    background: #00C853; color: white; border: none;
-    padding: 14px 40px; border-radius: 50px;
-    font-size: 18px; font-weight: 700; cursor: pointer;
-    transition: transform 0.2s; box-shadow: 0 4px 16px rgba(0,200,83,0.3);
-  }
-  .btn-publish:hover { transform: scale(1.05); }
-  
-  /* --- SUCCESS --- */
-  .success-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.6);
-    align-items: center; justify-content: center;
-    z-index: 100;
-  }
-  .success-card {
-    background: white; border-radius: 24px;
-    padding: 48px; text-align: center; max-width: 420px;
-  }
-  .success-card .check {
-    width: 80px; height: 80px; background: #00C853;
-    border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; margin: 0 auto 24px;
-    font-size: 40px; color: white;
-  }
-  .success-card h2 { color: #1a1a2e; margin-bottom: 8px; }
-  .success-card p { color: #666; font-size: 15px; }
-  
-  /* --- HIDDEN UNTIL LOGIN --- */
-  .dashboard { display: none; }
-  
-  /* --- RESPONSIVE --- */
-  @media (max-width: 600px) {
-    .header { padding: 12px 16px; }
-    .card { padding: 32px 20px; }
-    .publish-card { flex-direction: column; gap: 16px; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwan & Som — AI-Powered Pet Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+               background: linear-gradient(135deg, #ff7e5f, #feb47b); 
+               min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .card { background: white; border-radius: 24px; padding: 48px 36px; max-width: 480px; 
+                text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.15); margin: 20px; }
+        .logo { width: 100px; height: 100px; border-radius: 24px; background: #ff7e5f; 
+                margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; 
+                font-size: 48px; }
+        h1 { font-size: 28px; color: #333; margin-bottom: 8px; }
+        .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; line-height: 1.5; }
+        .features { text-align: left; margin-bottom: 32px; }
+        .features li { padding: 8px 0; color: #555; font-size: 15px; border-bottom: 1px solid #f0f0f0; }
+        .features li:before { content: "🐾 "; }
+        .btn { display: inline-block; background: #ff7e5f; color: white; padding: 14px 36px;
+               border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px;
+               transition: all 0.3s; }
+        .btn:hover { background: #e8694b; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,126,95,0.4); }
+        .links { margin-top: 24px; font-size: 13px; color: #999; }
+        .links a { color: #ff7e5f; margin: 0 8px; text-decoration: none; }
+        .links a:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
-
-<!-- HEADER -->
-<div class="header">
-  <div class="logo">
-    <div class="logo-icon">🎬</div>
-    <div>
-      <div class="logo-text">Kwan&Som</div>
-      <div class="logo-sub">Content Dashboard</div>
-    </div>
-  </div>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-  <!-- LOGIN CARD (visible before login) -->
-  <div class="card" id="loginCard">
-    <h1>Welcome to Kwan&Som</h1>
-    <p>Connect your TikTok account to manage, upload, and publish animated short films featuring Kwan & Som — your favorite animated duo!</p>
-    <button class="btn-tiktok" onclick="connectTikTok()">
-      <svg viewBox="0 0 24 24" fill="white"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-      Connect with TikTok
-    </button>
-    <p style="margin-top: 24px; font-size: 13px; color: #aaa;">
-      We use <strong>user.info.basic</strong> to identify your account,<br>
-      <strong>video.upload</strong> and <strong>video.publish</strong> to share Kwan&Som content.
-    </p>
-  </div>
-
-  <!-- DASHBOARD (visible after login) -->
-  <div class="dashboard" id="dashboard">
-
-    <!-- Profile -->
-    <div class="profile-bar">
-      <div class="avatar">K</div>
-      <div class="profile-info">
-        <h3>Kwan&Som Official</h3>
-        <span>@KwanAndSom • Connected via TikTok</span>
-      </div>
-    </div>
-
-    <!-- Upload -->
-    <div class="upload-area" id="uploadArea">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-      </svg>
-      <h3>Upload Video</h3>
-      <p>MP4 or MOV, max 50MB</p>
-      <button class="btn-upload" onclick="uploadVideo()">Choose Video</button>
-      <div class="progress-container" id="progressContainer">
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-text" id="progressText">Uploading...</div>
-      </div>
-    </div>
-
-    <!-- Publish -->
-    <div class="publish-card">
-      <div class="publish-info">
-        <div class="thumb">
-          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+    <div class="card">
+        <div class="logo">🐱🐶</div>
+        <h1>Kwan & Som</h1>
+        <p class="subtitle">
+            AI-powered pet content series featuring <strong>Kwan</strong> (a playful puppy) 
+            and <strong>Som</strong> (a curious kitten) on their daily adventures.
+            Brought to life with AI animation.
+        </p>
+        <ul class="features">
+            <li>3D Pixar-style animated shorts</li>
+            <li>Heartwarming pet stories with life lessons</li>
+            <li>AI-generated visuals & storytelling</li>
+            <li>New episodes weekly</li>
+        </ul>
+        <p style="color: #999; font-size: 13px; line-height: 1.6;">
+            This app lets the Kwan & Som creator team publish and manage content 
+            directly from their creative workflow. We use TikTok API integration 
+            to streamline content publishing so creators can focus on what matters — 
+            telling great stories.
+        </p>
+        <div class="links">
+            <a href="privacy.html">Privacy Policy</a> · 
+            <a href="tos.html">Terms of Service</a>
         </div>
-        <div class="publish-details">
-          <h3>Kwan&Som — Episode 2</h3>
-          <span>Uploaded • Ready to publish</span>
-        </div>
-      </div>
-      <button class="btn-publish" onclick="publishVideo()">Publish to TikTok</button>
     </div>
-
-  </div>
-</div>
-
-<!-- SUCCESS OVERLAY -->
-<div class="success-overlay" id="successOverlay">
-  <div class="success-card">
-    <div class="check">✓</div>
-    <h2>Published!</h2>
-    <p>Your Kwan&Som video is now live on TikTok. Fans can watch it on your profile!</p>
-  </div>
-</div>
-
-<script>
-  // Simulate TikTok OAuth login flow
-  function connectTikTok() {
-    // In production, this redirects to TikTok OAuth:
-    // window.location = 'https://www.tiktok.com/auth/authorize?...';
-    
-    // For demo: show login UI, then reveal dashboard
-    const loginCard = document.getElementById('loginCard');
-    const dashboard = document.getElementById('dashboard');
-    
-    loginCard.innerHTML = '<h1 style="color:#1a1a2e">Authorizing...</h1><p style="color:#666">Completing TikTok OAuth flow</p><div style="margin-top:24px"><div class="progress-bar" style="width:200px;margin:0 auto"><div class="progress-fill" id="oauthFill" style="width:0%"></div></div></div>';
-    
-    // Simulate OAuth progress
-    let progress = 0;
-    const fill = document.getElementById('oauthFill');
-    const oauthSteps = [
-      'Redirecting to TikTok...',
-      'User authorizes scopes...',
-      'Exchanging code for token...',
-      'Fetching user profile...',
-    ];
-    
-    const interval = setInterval(() => {
-      progress += 25;
-      fill.style.width = progress + '%';
-      loginCard.querySelector('p').textContent = oauthSteps[Math.min(Math.floor(progress/25), 3)];
-      
-      if (progress >= 100) {
-        clearInterval(interval);
-        setTimeout(() => {
-          loginCard.style.display = 'none';
-          dashboard.style.display = 'block';
-        }, 400);
-      }
-    }, 600);
-  }
-  
-  // Simulate video upload
-  function uploadVideo() {
-    const area = document.getElementById('uploadArea');
-    const progressContainer = document.getElementById('progressContainer');
-    const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
-    
-    area.classList.add('active');
-    progressContainer.style.display = 'block';
-    
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 15 + 5;
-      if (progress > 100) progress = 100;
-      progressFill.style.width = progress + '%';
-      progressText.textContent = `Uploading via TikTok API... ${Math.round(progress)}%`;
-      
-      if (progress >= 100) {
-        clearInterval(interval);
-        progressText.textContent = 'Upload complete ✓';
-        area.querySelector('h3').textContent = 'Video Uploaded';
-        area.querySelector('p').textContent = 'Ready for publishing';
-      }
-    }, 300);
-  }
-  
-  // Simulate publish
-  function publishVideo() {
-    document.getElementById('successOverlay').style.display = 'flex';
-    setTimeout(() => {
-      document.getElementById('successOverlay').style.display = 'none';
-    }, 3000);
-  }
-</script>
-
 </body>
 </html>
